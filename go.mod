@@ -2,4 +2,7 @@ module 2wenjianbaocun
 
 go 1.13
 
-require github.com/json-iterator/go v1.1.8
+require (
+	github.com/gin-gonic/gin v1.5.0 // indirect
+	github.com/json-iterator/go v1.1.8
+)
