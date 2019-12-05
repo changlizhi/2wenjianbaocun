@@ -1,13 +1,47 @@
 package main
 
-import "github.com/gin-gonic/gin"
-
+import (
+  "github.com/gin-gonic/gin"
+  "log"
+  "net/http"
+  "fmt"
+  "net/url"
+  // "github.com/json-iterator/go"
+)
+type Tone struct{
+  Name string
+  Age int64
+}
 func main() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
+	router := gin.Default()
+
+  // var json = jsoniter.ConfigCompatibleWithStandardLibrary
+  // var data =Tone{}
+
+  router.POST("/upload", func(c *gin.Context) {
+		// Multipart form
+		form, _ := c.MultipartForm()
+		files := form.File["files"]
+    log.Println("files",files)
+		for _, file := range files {
+			log.Println(file.Filename)
+
+			// 上传文件至指定目录
+			// c.SaveUploadedFile(file, dst)
+		}
+		c.String(http.StatusOK, fmt.Sprintf("%d files uploaded!", len(files)))
 	})
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+  router.POST("/post", func(c *gin.Context) {
+		ids := c.QueryMap("ids")
+		names := c.PostForm("names")
+
+    m, _ := url.ParseQuery(names)
+    log.Println("m------",m)
+
+    // json.Unmarshal(m, &data)
+    // log.Println("data------",data)
+
+    fmt.Printf("\nids: %v;\n names: %v\n", ids, names)
+	})
+	router.Run(":8080")
 }
