@@ -58,12 +58,10 @@ func TestParam(t *testing.T){
     Name:"ccc",
     Age:11111,
   }
-  json.Marshal(&data)
-  log.Println("datatest1---",data)
+  strbyte,_ := json.Marshal(&data)
+  log.Println("str---",string(strbyte))
   v := url.Values{}
-  v.Add("name", data)
-  v.Add("b", "bb")
-  v.Add("c", "有没有人")
+  v.Add("name", string(strbyte))
   body := v.Encode()
   log.Println("v---",v)
   log.Println("body---",body)

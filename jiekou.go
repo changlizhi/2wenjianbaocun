@@ -6,7 +6,7 @@ import (
   "net/http"
   "fmt"
   "net/url"
-  // "github.com/json-iterator/go"
+  "github.com/json-iterator/go"
 )
 type Tone struct{
   Name string
@@ -15,8 +15,8 @@ type Tone struct{
 func main() {
 	router := gin.Default()
 
-  // var json = jsoniter.ConfigCompatibleWithStandardLibrary
-  // var data =Tone{}
+  var json = jsoniter.ConfigCompatibleWithStandardLibrary
+  var data =Tone{}
 
   router.POST("/upload", func(c *gin.Context) {
 		// Multipart form
@@ -36,10 +36,10 @@ func main() {
 		names := c.PostForm("names")
 
     m, _ := url.ParseQuery(names)
-    log.Println("m------",m)
+    log.Println("m------",m["name"][0])
 
-    // json.Unmarshal(m, &data)
-    // log.Println("data------",data)
+    json.Unmarshal([]byte(m["name"][0]), &data)
+    log.Println("data.Name------",data.Name)
 
     fmt.Printf("\nids: %v;\n names: %v\n", ids, names)
 	})
